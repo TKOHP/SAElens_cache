@@ -32,14 +32,15 @@ def load_model(
         model = HookedTransformer.from_pretrained(
             model_name,
             hf_model=hf_model,
-            device="cpu",
+            device="cuda",
             fold_ln=False,
             center_writing_weights=False,
             center_unembed=False,
             tokenizer=tokenizer,
+            n_devices=2
         )
-        model = torch.nn.DataParallel(model)
-        model = model.to(device)
+        # model = torch.nn.DataParallel(model)
+        # model = model.to(device)
         return model
     elif model_class_name == "HookedMamba":
         try:
