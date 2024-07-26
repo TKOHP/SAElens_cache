@@ -453,6 +453,7 @@ class CacheActivationsRunnerConfig:
 
     # Misc
     device: str = "cpu"
+    n_devices:int=1
     act_store_device: str = "with_model"  # will be set by post init if with_model
     seed: int = 42
     dtype: str = "float32"

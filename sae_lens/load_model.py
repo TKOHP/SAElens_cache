@@ -9,6 +9,7 @@ def load_model(
     model_class_name: str,
     model_name: str,
     device: str | torch.device | None = None,
+    n_devices:int |None=None,
     model_from_pretrained_kwargs: dict[str, Any] | None = None,
 ) -> HookedRootModule:
     model_from_pretrained_kwargs = model_from_pretrained_kwargs or {}
