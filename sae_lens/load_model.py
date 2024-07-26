@@ -38,7 +38,7 @@ def load_model(
             center_writing_weights=False,
             center_unembed=False,
             tokenizer=tokenizer,
-            n_devices=4
+            n_devices=n_devices
         )
         # model = torch.nn.DataParallel(model)
         # model = model.to(device)
