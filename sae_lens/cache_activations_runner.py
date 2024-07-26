@@ -83,7 +83,8 @@ class CacheActivationsRunner:
             )
         #get activations
         ##train..
-            
+        n_buffers=len(os.listdir(new_cached_activations_path))    
+    
         ##shuffle only
         for _ in tqdm(range(self.cfg.n_shuffles_final), desc="Final shuffling"):
             self.shuffle_activations_pairwise(
