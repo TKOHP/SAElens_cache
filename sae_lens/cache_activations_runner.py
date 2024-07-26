@@ -69,7 +69,28 @@ class CacheActivationsRunner:
             f"Configuration:\n"
             f"{self.cfg}"
         )
-
+    @torch.no_grad()
+    def shuffle_activations(self):
+        cached_activations_path=self.cfg.new_cached_activations_path
+        assert cached_activations_path is not None
+        if not os.path.exists(cached_activations_path): 
+            raise Exception(
+                f"Activations directory ({cached_activations_path}) is not exists. Please generate activations first."
+            )
+        elif len(os.listdir(cached_activations_path))>0:
+            raise Exception(
+                f"Activations directory ({cached_activations_path}) is too short to shuffle. Please confirm it larger than 1."
+            )
+        #get activations
+        ##train..
+            
+        ##shuffle only
+        for _ in tqdm(range(self.cfg.n_shuffles_final), desc="Final shuffling"):
+            self.shuffle_activations_pairwise(
+            cached_activations_path,
+            buffer_idx_range=(0, n_buffers),
+        )
+            
     @torch.no_grad()
     def run(self):
         self.activations_store.track=False
