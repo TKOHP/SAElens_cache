@@ -148,12 +148,12 @@ class CacheActivationsRunner:
                 break
 
         # More final shuffling (mostly in case we didn't end on an i divisible by shuffle_every_n_buffers)
-        if n_buffers > 1:
-            for _ in tqdm(range(self.cfg.n_shuffles_final), desc="Final shuffling"):
-                self.shuffle_activations_pairwise(
-                    new_cached_activations_path,
-                    buffer_idx_range=(0, n_buffers),
-                )
+        # if n_buffers > 1:
+        #     for _ in tqdm(range(self.cfg.n_shuffles_final), desc="Final shuffling"):
+        #         self.shuffle_activations_pairwise(
+        #             new_cached_activations_path,
+        #             buffer_idx_range=(0, n_buffers),
+        #         )
 
     @torch.no_grad()
     def shuffle_activations_pairwise(
