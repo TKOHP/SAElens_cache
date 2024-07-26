@@ -38,6 +38,7 @@ def load_model(
             center_unembed=False,
             tokenizer=tokenizer,
         )
+        model = torch.nn.DataParallel(model)
         model = model.to(device)
         return model
     elif model_class_name == "HookedMamba":
