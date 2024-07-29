@@ -1,5 +1,9 @@
 import inspect
 import os
+
+# Add domestic mirror path
+os.environ["HF_ENDPOINT"] = "https://hf-mirror.com"
+
 import sys
 
 import torch
@@ -9,13 +13,13 @@ from sae_lens.config import DTYPE_MAP, LanguageModelSAERunnerConfig
 from sae_lens.sae_training_runner import SAETrainingRunner
 
 # sys.path.append("..")
+job_config_path = "../configs_example/train_sae/sweep_common.yml"
 
-
-if len(sys.argv) > 1:
-    job_config_path = sys.argv[1]
-    print(f"Train SAE Job config path: {job_config_path}")
-else:
-    raise ValueError("Error: One argument required - the Train SAE Job Config path")
+# if len(sys.argv) > 1:
+#     job_config_path = sys.argv[1]
+#     print(f"Train SAE Job config path: {job_config_path}")
+# else:
+#     raise ValueError("Error: One argument required - the Train SAE Job Config path")
 
 if torch.cuda.is_available():
     device = "cuda"

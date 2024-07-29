@@ -30,11 +30,11 @@ lr_decay_steps: 100
 # YAML 1.1 spec requires scientific notation to include the decimal to be parsed as a number
 # 1.0e-4 is correct and will be parsed as a number. 1e-4 is NOT correct and will be parsed as a string.
 
-model_name: gelu-1l
 hook_point: blocks.0.hook_mlp_out
 hook_point_layer: 0
 d_in: 512
-dataset_path: NeelNanda/c4-tokenized-2b
+dataset_path: Duxiaoman-DI/FinCorpus
+cached_activations_path: /root/data/sae/dataset/bs1024_ts3000_cs512_nbib64_sbsp16
 streaming: False
 context_size: 1024
 is_dataset_tokenized: True
@@ -76,7 +76,7 @@ adam_beta2: 0.999
 # Buffer details won't matter in we cache / shuffle our activations ahead of time.
 n_batches_in_buffer: 64
 store_batch_size: 16
-normalize_activations: none
+normalize_activations: "expected_average_only_in"
 # Feature Store
 feature_sampling_window: 1000
 dead_feature_window: 1000
@@ -88,5 +88,5 @@ eval_every_n_wandb_logs: 10
 # Misc
 seed: 42
 n_checkpoints: 0
-checkpoint_path: "checkpoints"
+checkpoint_path: "/root/data/sae/sae_checkpoint"
 dtype: torch.float32
