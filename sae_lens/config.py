@@ -481,7 +481,6 @@ class CacheActivationsRunnerConfig:
         if self.act_store_device == "with_model":
             self.act_store_device = self.device
 
-
 @dataclass
 class ToyModelSAERunnerConfig:
 
