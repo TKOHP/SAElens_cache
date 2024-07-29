@@ -14,7 +14,7 @@ from transformer_lens.hook_points import HookedRootModule
 from sae_lens.sae import SAE
 from sae_lens.toolkit.pretrained_saes_directory import get_pretrained_saes_directory
 from sae_lens.training.activations_store import ActivationsStore
-
+from sae_lens.load_model import load_model
 
 # Everything by default is false so the user can just set the ones they want to true
 @dataclass
@@ -447,6 +447,7 @@ def multiple_evals(
     eval_batch_size_prompts: int = 8,
     datasets: list[str] = ["Skylion007/openwebtext", "lighteval/MATH"],
     ctx_lens: list[int] = [64, 128, 256, 512],
+    n_devices:int=1
 ) -> pd.DataFrame:
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -484,9 +485,11 @@ def multiple_evals(
         if current_model_str != sae.cfg.model_name:
             del current_model  # potentially saves GPU memory
             current_model_str = sae.cfg.model_name
-            current_model = HookedTransformer.from_pretrained(
-                current_model_str, device=device
-            )
+            # current_model = HookedTransformer.from_pretrained(
+            #     current_model_str, device=device
+            # )
+            current_model = load_model(sae.cfg.model_class_name, current_model_str, device, n_devices=n_devices)
+
         assert current_model is not None
 
         for ctx_len in ctx_lens:
@@ -563,6 +566,11 @@ if __name__ == "__main__":
         default="eval_results.csv",
         help="Path to save evaluation results to.",
     )
+    arg_parser.add_argument(
+        "--n_devices",
+        type=int,
+        default="3",
+    )
 
     args = arg_parser.parse_args()
 
@@ -573,6 +581,7 @@ if __name__ == "__main__":
         eval_batch_size_prompts=args.eval_batch_size_prompts,
         datasets=args.datasets,
         ctx_lens=args.ctx_lens,
+        n_devices=args.n_devices
     )
 
     eval_results.to_csv(args.save_path, index=False)
