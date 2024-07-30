@@ -480,6 +480,24 @@ class CacheActivationsRunnerConfig:
 
         if self.act_store_device == "with_model":
             self.act_store_device = self.device
+        self.to_json(self.new_cached_activations_path + ".json")
+    def to_dict(self) -> dict[str, Any]:
+
+        cfg_dict = {
+            **self.__dict__,
+            # some args may not be serializable by default
+            "dtype": str(self.dtype),
+            "device": str(self.device),
+            "act_store_device": str(self.act_store_device),
+        }
+        return cfg_dict
+
+    def to_json(self, path: str) -> None:
+        json_path=path
+        # if not os.path.exists(os.path.dirname(path)):
+        #     os.makedirs(os.path.dirname(path))
+        with open(path, "w") as f:
+            json.dump(self.to_dict(), f, indent=2)
 
 @dataclass
 class ToyModelSAERunnerConfig:
