@@ -475,6 +475,7 @@ class ActivationsStore:
 
         If raise_on_epoch_end is True, when the dataset it exhausted it will automatically refill the dataset and then raise a StopIteration so that the caller has a chance to react.
         """
+        buffer_device_cpu = True
         context_size = self.context_size
         batch_size = self.store_batch_size_prompts
         d_in = self.d_in
@@ -488,7 +489,7 @@ class ActivationsStore:
             new_buffer = torch.zeros(
                 (buffer_size, num_layers, d_in),
                 dtype=self.dtype,  # type: ignore
-                device=self.device,
+                device="cpu" if buffer_device_cpu else self.device,
             )
             n_tokens_filled = 0
 
@@ -539,17 +540,17 @@ class ActivationsStore:
         new_buffer = torch.zeros(
             (total_size, context_size, num_layers, d_in),
             dtype=self.dtype,  # type: ignore
-            device=self.device,
+            device="cpu" if buffer_device_cpu else self.device,
         )
 
         for refill_batch_idx_start in refill_iterator:
             # move batch toks to gpu for model
             refill_batch_tokens = self.get_batch_tokens(
                 raise_at_epoch_end=raise_on_epoch_end
-            ).to(self.model.cfg.device)
+            ).to("cpu" if buffer_device_cpu else self.device)
             refill_activations = self.get_activations(refill_batch_tokens)
             # move acts back to cpu
-            refill_activations.to(self.device)
+            refill_activations.to("cpu" if buffer_device_cpu else self.device)
             new_buffer[
                 refill_batch_idx_start : refill_batch_idx_start + batch_size, ...
             ] = refill_activations
