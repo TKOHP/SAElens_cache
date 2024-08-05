@@ -148,7 +148,7 @@ class SAETrainingRunner:
 
             # train SAE
             sae = trainer.fit()
-
+#
 
         except (KeyboardInterrupt, InterruptedException):
             print("interrupted, saving progress")
